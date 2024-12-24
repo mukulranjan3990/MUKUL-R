@@ -1,0 +1,209 @@
+#include <iostream>
+using namespace std;
+
+// Node structure for Doubly Linked List
+class node {
+public:
+    int data;
+    node *next;
+    node *prev;
+
+    node(int value) {
+        data = value;
+        next = NULL;
+        prev = NULL;
+    }
+};
+class doublelinkedlist {
+    public:
+    node* head;
+    doublelinkedlist(){
+        head=NULL;
+    }
+    
+
+// Insert at head
+void insertAtHead( int value) {
+    node *n = new node(value);
+    if (head == NULL) {
+        head = n;
+        return;
+    }
+    n->next = head;
+    head->prev = n; 
+    head = n;
+}
+//Insert after the given node
+void insertATmiddle( int point,int value)
+{
+    node *n = new node(value);
+    node* temp= head;
+    while(temp->data!=point){
+        temp=temp->next;
+
+    }
+    n->next=temp->next;
+    n->prev=temp;
+    temp->next=n;
+} 
+// Insert at tail
+void insertAtTail( int value) {
+    node *n = new node(value);
+    if (head == NULL) {
+        head = n;
+        return;
+    }
+    node *temp = head;
+    while (temp->next != NULL) {
+        temp = temp->next;
+    }
+    temp->next = n;
+    n->prev = temp;
+}
+
+// Delete head
+void deleteHead() {
+    if (head == NULL) return;
+    node *toDelete = head;
+    head = head->next;
+    if (head != NULL) {
+        head->prev = NULL;
+    }
+    delete toDelete;
+}
+
+// Delete a specific node
+void deleteNode( int value) {
+    if (head == NULL) return;
+    node *temp = head;
+    while (temp != NULL && temp->data != value) {
+        temp = temp->next;
+    }
+    if (temp == NULL) return; // Value not found
+    if (temp->prev != NULL) {
+        temp->prev->next = temp->next;
+    } else {
+        head = temp->next; // Deleting head
+    }
+    if (temp->next != NULL) {
+        temp->next->prev = temp->prev;
+    }
+    delete temp;
+}
+
+// Search a node
+bool search( int key) {
+    node *temp = head;
+    while (temp != NULL) {
+        if (temp->data == key) {
+            cout<<"This element is exixt in the list"<<endl;
+            return true;
+        }
+        temp = temp->next;
+    }
+
+    return false;
+}
+
+// Display the Doubly Linked List
+void display() {
+    node *temp = head;
+    while (temp != NULL) {
+        cout << temp->data << " ";
+        temp = temp->next;
+    }
+    cout << endl;
+}
+};
+
+// Main function to demonstrate Doubly Linked List
+int main() {
+while(1){
+    cout<<"MENUE"<<endl
+        <<"1.InsertAthead"<<endl
+        <<"2.InsertAtTail"<<endl
+        <<"3.InsertAtmiddle"<<endl
+        <<"4.deletehead"<<endl
+        <<"5.deletegivenNOde"<<endl
+        <<"6.search"<<endl
+        <<"7.display"<<endl
+        <<"8.New linked list"<<endl;
+   doublelinkedlist obj;
+    char op;
+    int n;
+    int p;
+cout<<endl;
+cout<<"size of linked list:-";
+cin>>n;
+cout<<endl;
+    int no;
+    int po;
+   for(int i =0;i<n;i++){
+    cout<<"Enter the data:- ";
+    cin>>no;
+    obj.insertAtTail(no);
+    
+   }
+   p=1;
+  while(p==1){
+    cout<<"Enter operation key (1,2,3,4,5,6)"<<endl;
+    cin>>op;
+
+    switch(op)
+    {
+        case '1':
+            cout<<"Enter data:- ";
+            cin>>no;
+            obj.insertAtHead(no);
+            p=1;
+             continue;
+        case '2':
+            cout<<"Enter data:- ";
+            cin>>no;
+            cout<<"Enter element wher you wants to insert:- ";
+            cin>>po;
+            obj.insertATmiddle(po,no);
+            p=1;
+             continue;
+        case '3':
+            cout<<"Enter data:- ";
+            cin>>no;
+            obj.insertAtTail(no);
+            p=1;
+             continue;
+        case '4':
+             
+            obj.deleteHead();
+            p=1;
+             continue;
+        case '5':
+            cout<<"Enter the node wants to delete:- ";
+            cin>>no;
+            obj.deleteNode(no);
+            p=1;
+             continue;
+        case '6':
+            cout<<"Enter the element wants to find:- ";
+            cin>>no;
+            obj.search(no);
+            p=1;
+             continue;
+        case '7':
+             
+             obj.display();
+             p=1;
+             continue;
+        case '8':
+            p=0;
+            break;
+        default:
+        cout<<"enter another operater"<<endl;
+        continue;   
+    }
+  }
+   
+}
+    
+
+    return 0;
+}
