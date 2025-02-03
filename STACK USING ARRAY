@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+
+#define MAX 5
+int stack[MAX];
+int top = -1;
+
+// Push the element into the stack
+void push(int element) {
+    if (top >= MAX-1 ) {
+        cout << "Stack Overflow\n";
+        return;
+    }
+    stack[++top] = element;
+}
+
+// Remove element from stack
+int pop() {
+    if (top < 0) {
+        cout << "Stack Underflow\n";
+        return -1;
+    }
+    return stack[top--];
+}
+
+// Display elements of the stack
+void display() {
+    if (top < 0) {
+        cout << "Stack is empty\n";
+        return;
+    }
+    // Corrected loop to display elements in the correct order
+    for (int i = top; i >= 0; i--) {
+        cout << stack[i] << " ";
+    }
+    cout << endl;
+}
+
+// Display operation menu
+void displayMenu() {
+    cout << "\nStack Operation Menu:\n";
+    cout << "1. Push\n";
+    cout << "2. Pop\n";
+    cout << "3. Display\n";
+    cout << "4. Exit\n";
+}
+
+// Main function to execute the code
+int main() {
+    int choice, value; 
+    while (true) {
+        displayMenu();
+        cout << "Enter your choice: ";
+        cin >> choice;
+        
+        switch (choice) {
+            case 1:
+                cout << "Enter the value: ";
+                cin >> value;
+                push(value);
+                break;
+            case 2:
+                value = pop();
+                if (value != -1) {
+                    cout << "Popped element: " << value << endl;
+                }
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                cout << "Exiting...\n";
+                return 0;
+            default:
+                cout << "Invalid choice, please try again\n";
+        }
+    }
+    return 0;
+}
