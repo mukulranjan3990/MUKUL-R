@@ -1,0 +1,13 @@
+#include<iostream>
+using namespace std;
+int main(){
+    int rem,pow=1,no,ans=0;
+    cin>>no;
+    while(no>0){
+        rem =no%10;
+        ans+=rem*pow;
+        no/=10;
+        pow*=2;
+    }
+    cout<<ans;
+}
