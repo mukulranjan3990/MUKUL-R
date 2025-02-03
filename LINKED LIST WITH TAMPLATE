@@ -1,0 +1,212 @@
+#include <iostream>
+using namespace std;
+
+template <class T>
+class node {
+public:
+    T data;
+    node* next;
+    node* prev;
+
+    node(T value) {
+        data = value;
+        next = NULL;
+        prev = NULL;
+    }
+};
+
+template <class T>
+class doublelinkedlist {
+public:
+    node<T>* head;  // Correct template instantiation
+
+    doublelinkedlist() {
+        head = NULL;
+    }
+
+    // Insert at head
+    void insertAtHead(T value) {
+        node<T>* n = new node<T>(value);
+        if (head == NULL) {
+            head = n;
+            return;
+        }
+        n->next = head;
+        head->prev = n;
+        head = n;
+    }
+
+    // Insert in the middle after a given node
+    void insertATmiddle(T point, T value) {
+        node<T>* n = new node<T>(value);
+        node<T>* temp = head;
+
+        while (temp != NULL && temp->data != point) {
+            temp = temp->next;
+        }
+
+        if (temp == NULL) {
+            cout << "Element " << point << " not found!" << endl;
+            delete n;
+            return;
+        }
+
+        n->next = temp->next;
+        n->prev = temp;
+        if (temp->next != NULL) {
+            temp->next->prev = n;
+        }
+        temp->next = n;
+    }
+
+    // Insert at tail
+    void insertAtTail(T value) {
+        node<T>* n = new node<T>(value);
+        if (head == NULL) {
+            head = n;
+            return;
+        }
+        node<T>* temp = head;
+        while (temp->next != NULL) {
+            temp = temp->next;
+        }
+        temp->next = n;
+        n->prev = temp;
+    }
+
+    // Delete head
+    void deleteHead() {
+        if (head == NULL) return;
+        node<T>* toDelete = head;
+        head = head->next;
+        if (head != NULL) {
+            head->prev = NULL;
+        }
+        delete toDelete;
+    }
+
+    // Delete a specific node
+    void deleteNode(T value) {
+        if (head == NULL) return;
+        node<T>* temp = head;
+
+        while (temp != NULL && temp->data != value) {
+            temp = temp->next;
+        }
+
+        if (temp == NULL) {
+            cout << "Element " << value << " not found!" << endl;
+            return;
+        }
+
+        if (temp->prev != NULL) {
+            temp->prev->next = temp->next;
+        } else {
+            head = temp->next;  // Deleting head
+        }
+
+        if (temp->next != NULL) {
+            temp->next->prev = temp->prev;
+        }
+
+        delete temp;
+    }
+
+    // Search a node
+    bool search(T key) {
+        node<T>* temp = head;
+        while (temp != NULL) {
+            if (temp->data == key) {
+                cout << "This element exists in the list" << endl;
+                return true;
+            }
+            temp = temp->next;
+        }
+        cout << "Element not found!" << endl;
+        return false;
+    }
+
+    // Display the Doubly Linked List
+    void display() {
+        node<T>* temp = head;
+        while (temp != NULL) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
+    }
+};
+
+// Main function to demonstrate Doubly Linked List
+int main() {
+    doublelinkedlist<int> obj;  // ✅ Move object creation outside
+
+    while (1) {
+        cout << "MENU" << endl
+             << "1. Insert At Head" << endl
+             << "2. Insert At Middle" << endl
+             << "3. Insert At Tail" << endl
+             << "4. Delete Head" << endl
+             << "5. Delete Given Node" << endl
+             << "6. Search" << endl
+             << "7. Display" << endl
+             << "8. Exit" << endl;
+
+        char op;
+        int n, no, po;
+
+        cout << "Enter operation key (1-8): ";
+        cin >> op;
+
+        switch (op) {
+            case '1':
+                cout << "Enter data: ";
+                cin >> no;
+                obj.insertAtHead(no);
+                break;
+
+            case '2':
+                cout << "Enter data: ";
+                cin >> no;
+                cout << "Enter element where you want to insert: ";
+                cin >> po;
+                obj.insertATmiddle(po, no);
+                break;
+
+            case '3':
+                cout << "Enter data: ";
+                cin >> no;
+                obj.insertAtTail(no);
+                break;
+
+            case '4':
+                obj.deleteHead();
+                break;
+
+            case '5':
+                cout << "Enter the node value to delete: ";
+                cin >> no;
+                obj.deleteNode(no);
+                break;
+
+            case '6':
+                cout << "Enter the element to find: ";
+                cin >> no;
+                obj.search(no);
+                break;
+
+            case '7':
+                obj.display();
+                break;
+
+            case '8':
+                return 0;
+
+            default:
+                cout << "Enter a valid option!" << endl;
+                break;
+        }
+    }
+
+    return 0;
+}
